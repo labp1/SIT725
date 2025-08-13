@@ -4,6 +4,11 @@ var app = express()
 // Import mongoose library (to communicate with MongoDB database)
 const mongoose = require('mongoose');
 
+// Set up middleware
+app.use(express.static('public'));           // Serve static files from public folder
+app.use(express.json());                     // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse form data
+
 var port = process.env.port || 3000;
 app.listen(port, () => {
     console.log("App listening to: http://localhost" + port)
@@ -28,4 +33,12 @@ const ProjectSchema = new mongoose.Schema({
     description: String,
 });
 
+// Create a Project model based on above schema
 const Project = mongoose.model('Project', ProjectSchema);
+
+// ROUTES (API endpoints)
+
+// Serve the main HTML page
+app.get('/', (req, res) => {
+    res.send('index.html');
+});
